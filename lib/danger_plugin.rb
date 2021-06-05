@@ -15,7 +15,8 @@ module Danger
   #      scheme: 'EasyPeasy',
   #      workspace: 'Example/EasyPeasy.xcworkspace',
   #      exclude_targets: 'Demo.app',
-  #      minimum_coverage_percentage: 90
+  #      minimum_coverage_percentage: 90,
+  #      minimum_file_coverage_percentage: 50  
   #    )
   #
   # @tags xcode, coverage, xccoverage, tests, ios, xcov
@@ -35,7 +36,7 @@ module Danger
       # Run xcov to produce a processed report
       report = produce_report(*args)
       # Output the processed report
-      output_report(report)
+      output_report(report, *args)
     end
   
     # Produces and processes a report for use in the report method
@@ -74,7 +75,7 @@ module Danger
     end
 
     # Outputs a processed report with Danger
-    def output_report(report)
+    def output_report(report, *args)
       # Create markdown
       report_markdown = report.markdown_value
 
@@ -85,6 +86,18 @@ module Danger
       threshold = Xcov.config[:minimum_coverage_percentage].to_i
       if !threshold.nil? && (report.coverage * 100) < threshold
         fail("Code coverage under minimum of #{threshold}%")
+      end
+
+      # Notify failure if minimum coverage hasn't been reached for the modified files
+      file_threshold = args.first[:minimum_file_coverage_percentage].to_i
+      if !file_threshold.nil?
+        report.target.each do |target|
+          target.files.each do |file|
+            if (file.coverage * 100) < file_threshold
+              fail("Class code coverage is below minimum. Improve to at least #{file_threshold}%")
+            end
+          end
+        end
       end
     end
 
@@ -110,6 +123,7 @@ module Danger
     def convert_options(options)
       converted_options = options.dup
       converted_options.delete(:verbose)
+      converted_options.delete(:minimum_file_coverage_percentage)
       converted_options
     end
 

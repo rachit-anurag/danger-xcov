@@ -36,7 +36,8 @@ xcov.report(
    scheme: 'EasyPeasy',
    workspace: 'Example/EasyPeasy.xcworkspace',
    exclude_targets: 'Demo.app',
-   minimum_coverage_percentage: 90
+   minimum_coverage_percentage: 90,
+   minimum_file_coverage_percentage: 50,
 )
 ```
 
@@ -55,7 +56,8 @@ report = xcov.produce_report(
   scheme: 'EasyPeasy',
   workspace: 'Example/EasyPeasy.xcworkspace',
   exclude_targets: 'Demo.app',
-  minimum_coverage_percentage: 90
+  minimum_coverage_percentage: 90,
+  minimum_file_coverage_percentage: 50,
 )
 
 # Do some custom filtering with the report here
@@ -63,6 +65,9 @@ report = xcov.produce_report(
 # Post markdown report
 xcov.output_report(report)
 ```
+
+## Updates in the plugin
+- Added `minimum_file_coverage_percentage` parameter to allow file based coverage threshold.
 
 ## License
 This project is licensed under the terms of the MIT license. See the LICENSE file.
