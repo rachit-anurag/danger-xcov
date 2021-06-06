@@ -91,7 +91,7 @@ module Danger
       # Notify failure if minimum coverage hasn't been reached for the modified files
       file_threshold = args.first[:minimum_file_coverage_percentage].to_i
       if !file_threshold.nil?
-        report.target.each do |target|
+        report.targets.each do |target|
           target.files.each do |file|
             if (file.coverage * 100) < file_threshold
               fail("Class code coverage is below minimum. Improve to at least #{file_threshold}%")
