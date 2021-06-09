@@ -93,10 +93,8 @@ module Danger
       if !file_threshold.nil?
         report.targets.each do |target|
           target.files.each do |file|
-            if !file.name.include? "View"
-              if (file.coverage * 100) < file_threshold
-                fail("Class code coverage is below minimum. Improve to at least #{file_threshold}%")
-              end
+            if ((file.coverage * 100) < file_threshold) && (!file.name.include? "View")
+              fail("Class code coverage is below minimum. Improve #{file.name} to at least #{file_threshold}%")
             end
           end
         end

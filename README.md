@@ -68,6 +68,13 @@ xcov.output_report(report)
 
 ## Updates in the plugin
 - Added `minimum_file_coverage_percentage` parameter to allow file based coverage threshold.
+- Filtering files which contain the keyword `View` for example any `SomeViewController.swift` will be skipped from the `minimum_file_coverage_percentage` check.
+
+## Linking this custom support to your repo
+Add this to your gemfile instead of `danger-xcov`, point it to this fork.
+```ruby
+gem 'danger-xcov', :git => 'https://github.com/rachit-anurag/danger-xcov.git'
+```
 
 ## License
 This project is licensed under the terms of the MIT license. See the LICENSE file.
